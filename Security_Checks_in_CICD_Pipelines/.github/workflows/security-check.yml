@@ -1,0 +1,32 @@
+name: Security Checks CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - feature/SecurityChecks
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Security Audit
+        run: npm audit --audit-level=moderate
+
+      - name: Run Application (Test)
+        run: node app.js &
